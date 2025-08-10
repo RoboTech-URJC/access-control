@@ -1,4 +1,4 @@
-// File: /home/manza/Desktop/rt_login/src/app/admin/page.tsx
+// File: /home/manza/Desktop/robotech/access-control/src/app/admin/page.tsx
 import * as entry from '../../../../src/app/admin/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

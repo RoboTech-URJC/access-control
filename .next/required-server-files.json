@@ -104,7 +104,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/home/manza/Desktop/rt_login",
+    "outputFileTracingRoot": "/home/manza/Desktop/robotech/access-control",
     "experimental": {
       "nodeMiddleware": false,
       "cacheLife": {
@@ -287,10 +287,10 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "/home/manza/Desktop/rt_login"
+      "root": "/home/manza/Desktop/robotech/access-control"
     }
   },
-  "appDir": "/home/manza/Desktop/rt_login",
+  "appDir": "/home/manza/Desktop/robotech/access-control",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",
