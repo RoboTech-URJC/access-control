@@ -49,7 +49,7 @@ export default function LoginPage() {
           </div>
           <CardTitle className="text-2xl font-headline text-center">Admin Login</CardTitle>
           <CardDescription className="text-center">
-            Introduce tus credenciales para poder hacer Checck - in
+            Enter your credentials to access the dashboard
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -59,7 +59,7 @@ export default function LoginPage() {
               <Input
                 id="username"
                 type="text"
-                placeholder="e.g. pepe"
+                placeholder="e.g. admin"
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
