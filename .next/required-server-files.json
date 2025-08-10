@@ -12,7 +12,7 @@
     },
     "distDir": ".next",
     "cleanDistDir": true,
-    "assetPrefix": "",
+    "assetPrefix": "/access-control/",
     "cacheMaxMemorySize": 52428800,
     "configOrigin": "next.config.ts",
     "useFileSystemPublicRoutes": true,
@@ -46,7 +46,7 @@
         256,
         384
       ],
-      "path": "/_next/image",
+      "path": "/access-control/_next/image",
       "loader": "default",
       "loaderFile": "",
       "domains": [],
@@ -76,9 +76,9 @@
       "pagesBufferLength": 5
     },
     "amp": {
-      "canonicalBase": ""
+      "canonicalBase": "/access-control"
     },
-    "basePath": "",
+    "basePath": "/access-control",
     "sassOptions": {},
     "trailingSlash": false,
     "i18n": null,

@@ -2,8 +2,16 @@
   "version": 3,
   "pages404": true,
   "caseSensitive": false,
-  "basePath": "",
+  "basePath": "/access-control",
   "redirects": [
+    {
+      "source": "/access-control/",
+      "destination": "/access-control",
+      "basePath": false,
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^/access-control/$"
+    },
     {
       "source": "/:path+/",
       "destination": "/:path+",
@@ -63,5 +71,15 @@
     "pathHeader": "x-nextjs-rewritten-path",
     "queryHeader": "x-nextjs-rewritten-query"
   },
-  "rewrites": []
+  "rewrites": {
+    "beforeFiles": [
+      {
+        "source": "/access-control//_next/:path+",
+        "destination": "/access-control/_next/:path+",
+        "regex": "^/access-control//_next(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))(?:/)?$"
+      }
+    ],
+    "afterFiles": [],
+    "fallback": []
+  }
 }
