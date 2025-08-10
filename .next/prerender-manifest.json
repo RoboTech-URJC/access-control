@@ -30,6 +30,30 @@
         "x-next-revalidate-tag-token"
       ]
     },
+    "/": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "Next-Action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/",
+      "dataRoute": "/index.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/login": {
       "experimentalBypassFor": [
         {
@@ -77,37 +101,13 @@
         "x-next-revalidated-tags",
         "x-next-revalidate-tag-token"
       ]
-    },
-    "/": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "Next-Action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/",
-      "dataRoute": "/index.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
     }
   },
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "6e016216fd14bd5cbcdc8e49c5266469",
-    "previewModeSigningKey": "b4e30b05ebd08ca1a557a1e1a65272c4fdacdf9d2f109d6d376fd25d7c6a6914",
-    "previewModeEncryptionKey": "5a2e713fdb3ef3ccc4befe823dfcbd963471a16983504c358212cb795b79554e"
+    "previewModeId": "5f550eeb96d851d23fc7c098bf46279d",
+    "previewModeSigningKey": "bba39da0e9e063c41a5b1112295fa2867725ad302442b6d228f64625af7df7f3",
+    "previewModeEncryptionKey": "fd8174b6e7c0ed039c63a1500e8f4c384ca37bbf25f3cf3aebd42565f48e302a"
   }
 }
