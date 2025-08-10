@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import AppHeader from '@/components/AppHeader';
 
 export const metadata: Metadata = {
-  title: 'Campus Hub Check-In',
+  title: 'Control de acceso RoboTech',
   description: 'Student association check-in system.',
 };
 

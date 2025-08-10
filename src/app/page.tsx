@@ -73,7 +73,7 @@ export default function Home() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card className="lg:col-span-1">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium font-headline">Current Status</CardTitle>
+              <CardTitle className="text-sm font-medium font-headline">Estado actual</CardTitle>
               {currentStatus.icon}
             </CardHeader>
             <CardContent>
@@ -81,7 +81,7 @@ export default function Home() {
                 <OccupancyIndicator status={occupancyStatus} />
                 <div>
                   <p className="text-xl md:text-2xl font-bold">{currentStatus.text}</p>
-                  <p className="text-xs text-muted-foreground">Real-time occupancy indicator</p>
+                  <p className="text-xs text-muted-foreground">Indicador en tiempo real de la ocupación</p>
                 </div>
               </div>
             </CardContent>
@@ -89,26 +89,26 @@ export default function Home() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium font-headline">People Inside</CardTitle>
+              <CardTitle className="text-sm font-medium font-headline">Personas en el Local</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{reservation ? 'N/A' : count}</div>
-              <p className="text-xs text-muted-foreground">Total people currently in the local</p>
+              <p className="text-xs text-muted-foreground">Personas totales actualmente en el lcoal</p>
             </CardContent>
           </Card>
           
           <Card className="md:col-span-2 lg:col-span-1">
             <CardHeader>
-              <CardTitle className="font-headline">Actions</CardTitle>
-              <CardDescription>Check-in, check-out or reserve the local.</CardDescription>
+              <CardTitle className="font-headline">Acciones</CardTitle>
+              <CardDescription>Check-in, check-out o reserva del local.</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Button onClick={() => setCheckInOpen(true)} disabled={!!reservation || !user || !!userCheckIn}>
                 <LogIn className="mr-2 h-4 w-4" /> Check In
               </Button>
                <Button variant="secondary" className="col-span-1" onClick={() => setReservationOpen(true)} disabled={!!reservation || !user || count > 0}>
-                <Calendar className="mr-2 h-4 w-4" /> Reserve Local
+                <Calendar className="mr-2 h-4 w-4" /> Reserva Local
               </Button>
             </CardContent>
           </Card>
@@ -117,30 +117,30 @@ export default function Home() {
             <Card className="md:col-span-2 lg:col-span-3">
               <CardHeader>
                 <CardTitle className="font-headline">Check-out</CardTitle>
-                <CardDescription>Manage your group or leave the local.</CardDescription>
+                <CardDescription>Gestiona tu grupo o abandona el local.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                   <Button variant="outline" onClick={handleCheckOutSingle} disabled={count === 0}>
-                    <UserMinus className="mr-2 h-4 w-4" /> Check-out (Just Me)
+                    <UserMinus className="mr-2 h-4 w-4" /> Check-out (Solo yo)
                   </Button>
                   {userCheckIn && (
                      <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button variant="destructive">
-                                <UserX className="mr-2 h-4 w-4" /> Check-out My Group ({userCheckIn.people} people)
+                                <UserX className="mr-2 h-4 w-4" /> Check-out del grupo ({userCheckIn.people} personas)
                             </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                         <AlertDialogHeader>
-                            <AlertDialogTitle>Check-out Entire Group?</AlertDialogTitle>
+                            <AlertDialogTitle>¿Check-out del grupo entero?</AlertDialogTitle>
                             <AlertDialogDescription>
-                             This will check out all {userCheckIn.people} people that you registered under your name. Are you sure?
+                             Esto hará el checkout de las {userCheckIn.people} personas que indicaste en el check-in a tu nombre. ¿Estás seguro?
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleCheckOutGroup(userCheckIn)}>Confirm Check-out</AlertDialogAction>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleCheckOutGroup(userCheckIn)}>Confirmar Check-out</AlertDialogAction>
                         </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
@@ -160,7 +160,7 @@ export default function Home() {
                   <Ban /> Local Reserved
                 </CardTitle>
                 <CardDescription className="text-primary/80">
-                  The association local is currently reserved. Check-out when finished.
+                  El local esta reservado actualmente. Haz el check-out cuando acabeis.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
