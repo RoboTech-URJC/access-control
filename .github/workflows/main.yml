@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Asegúrate de que esto coincida con tu rama principal
+      - main # Asegúrate de que esta es tu rama principal
 
 jobs:
   deploy:
@@ -12,15 +12,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Replace API Key in script.js
-        # Este comando usa `sed` (editor de flujo) para reemplazar el marcador de posición
-        # ${{ secrets.FIREBASE_API_KEY }} es la variable del secreto de GitHub
+      - name: Replace API Key in index.html
+        # Este comando ahora reemplaza el marcador en el index.html
         run: |
-          sed -i "s/%%VITE_FIREBASE_API_KEY%%/${{ secrets.FIREBASE_API_KEY }}/g" script.js
+          sed -i "s/%%FIREBASE_API_KEY%%/${{ secrets.FIREBASE_API_KEY }}/g" index.html
         shell: bash
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./ # Despliega todo el directorio raíz del repositorio
+          publish_dir: ./
