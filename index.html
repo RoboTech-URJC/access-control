@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Hub Check-In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1 class="header-title">Campus Hub</h1>
+            <div class="header-actions">
+                <div id="loginSection" class="login-section">
+                    <input type="text" id="loginDniInput" placeholder="Introduce tu DNI" class="login-input">
+                    <button class="button" id="loginBtn">Entrar</button>
+                </div>
+                <div id="loggedInSection" class="logged-in-section hidden">
+                    <span id="welcomeMessage" class="welcome-message"></span>
+                    <button class="button" id="adminDashboardBtn">Panel de Admin</button>
+                    <button class="button button-secondary" id="logoutBtn">Salir</button>
+                </div>
+            </div>
+        </header>
+
+        <main id="mainDashboard" class="main-dashboard hidden">
+            <div class="dashboard-grid">
+                <div class="card status-card">
+                    <h2 class="card-title">Estado Actual</h2>
+                    <div id="statusIndicator" class="status-indicator-container"></div>
+                    <p id="statusText" class="card-description">Asociación vacía</p>
+                </div>
+                <div class="card occupancy-card">
+                    <h2 class="card-title">Personas Dentro</h2>
+                    <p id="peopleCount" class="card-value">0</p>
+                    <p class="card-description">Total de personas en el local</p>
+                </div>
+                <div class="card actions-card" id="actionsCard">
+                    <h2 class="card-title">Acciones</h2>
+                    <p class="card-description">Haz check-in o reserva el local.</p>
+                    <div class="button-group">
+                        <button class="button" id="checkInBtn">Check In</button>
+                        <button class="button button-secondary" id="reserveBtn">Reservar Local</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="upcomingReservationsCard" class="card upcoming-card hidden">
+                <h2 class="card-title">Próxima Reserva Confirmada</h2>
+                <p>El local estará reservado a partir de:</p>
+                <p><strong>Motivo:</strong> <span id="upcomingReservedReason"></span></p>
+                <p><strong>Reservado por:</strong> <span id="upcomingReservedBy"></span></p>
+                <p><strong>Horario:</strong> <span id="upcomingReservedTime"></span></p>
+            </div>
+
+            <div id="checkInForm" class="form-section hidden">
+                <h2>Check In</h2>
+                <input type="number" id="groupSizeInput" placeholder="Número de acompañantes (opcional)" min="0" value="0">
+                <div class="form-actions">
+                    <button class="button" id="confirmCheckInBtn">Confirmar</button>
+                    <button class="button button-secondary" id="cancelCheckInBtn">Cancelar</button>
+                </div>
+            </div>
+
+            <div id="reservationForm" class="form-section hidden">
+                <h2>Solicitar Reserva</h2>
+                <input type="text" id="reserveName" placeholder="Nombre completo" disabled>
+                <input type="text" id="reservePhone" placeholder="Teléfono de contacto">
+                <input type="text" id="reserveReason" placeholder="Motivo de la reserva">
+                <input type="datetime-local" id="reserveStart">
+                <input type="datetime-local" id="reserveEnd">
+                <div class="form-actions">
+                    <button class="button" id="confirmReservationBtn">Solicitar Reserva</button>
+                    <button class="button button-secondary" id="cancelReservationBtn">Cancelar</button>
+                </div>
+            </div>
+
+            <div id="reservationDetails" class="card reserved-card hidden">
+                <h2 class="card-title">Local Reservado</h2>
+                <p><strong>Motivo:</strong> <span id="reservedReason"></span></p>
+                <p><strong>Reservado por:</strong> <span id="reservedBy"></span></p>
+                <p><strong>Contacto:</strong> <span id="reservedPhone"></span></p>
+                <p><strong>Horario:</strong> <span id="reservedTime"></span></p>
+                <button class="button" id="endReservationBtn">Finalizar Reserva</button>
+            </div>
+
+            <div id="checkoutSection" class="form-section hidden">
+                <h2>Check-out</h2>
+                <div class="form-actions">
+                    <button class="button" id="checkoutSingleBtn">Check-out (Solo yo)</button>
+                    <button class="button button-secondary" id="checkoutGroupBtn">Salir del local</button>
+                </div>
+            </div>
+        </main>
+
+        <section id="adminDashboard" class="admin-dashboard hidden">
+            <header class="admin-header">
+                <h2 class="admin-title">Panel de Administración</h2>
+                <button class="button button-secondary" id="backToDashboardBtn">Volver</button>
+            </header>
+            <div class="admin-grid">
+                <div class="card status-card">
+                    <h3 class="card-title">Ocupación Actual</h3>
+                    <p id="adminPeopleCount" class="card-value">0</p>
+                    <p class="card-description">Personas dentro</p>
+                </div>
+                <div class="card status-card">
+                    <h3 class="card-title">Estado</h3>
+                    <div id="adminStatusIndicator" class="status-indicator-container"></div>
+                    <p id="adminStatusText" class="card-description">Vacío</p>
+                </div>
+                <div class="card emergency-actions-card">
+                    <h3 class="card-title">Acciones de Emergencia</h3>
+                    <button class="button button-danger" id="resetAllBtn">Reiniciar Datos</button>
+                    <p class="card-description">Usar con precaución. Borrará todo.</p>
+                </div>
+            </div>
+
+            <div class="admin-table-section">
+                <h3>DNI Autorizados</h3>
+                <div class="table-container">
+                    <table id="authorizedDnisTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>DNI</th>
+                                <th>Admin</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="form-actions-inline">
+                    <input type="text" id="newDniInput" placeholder="Añadir nuevo DNI">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="isAdminCheckbox"> <label for="isAdminCheckbox">Es admin</label>
+                    </div>
+                    <button class="button" id="addDniBtn">Añadir</button>
+                </div>
+            </div>
+
+            <div class="admin-table-section">
+                <h3>Reservas Pendientes</h3>
+                <div class="table-container">
+                    <table id="pendingReservationsTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Motivo</th>
+                                <th>Horario</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="admin-table-section">
+                <h3>Registro de Alertas</h3>
+                <div class="table-container">
+                    <table id="alertsLogTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Tipo</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="admin-table-section">
+                <h3>Registro de Actividad</h3>
+                <div class="table-container">
+                    <table id="activityLogTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Usuario</th>
+                                <th>Acción</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
