@@ -2,7 +2,7 @@
 // Configuración de Firebase
 // ===============================================
 const firebaseConfig = {
-    apiKey: "AIzaSyAsggFpgDFUHRbD17nfcoe9G4Spo_avzZE", 
+    apiKey: API_KEY, 
     authDomain: "control-aceso-rt.firebaseapp.com",
     projectId: "control-aceso-rt",
     storageBucket: "control-aceso-rt.firebasestorage.app",
@@ -14,7 +14,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const HARDCODED_ADMIN_DNI = 'ADMIN123';
+const HARDCODED_ADMIN_DNI = 'ADMIN';
 
 // ===============================================
 // Variables de Estado y Sincronización
