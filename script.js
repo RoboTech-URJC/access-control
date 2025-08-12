@@ -14,7 +14,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const HARDCODED_ADMIN_DNI = 'ADMIN';
+const HARDCODED_ADMIN_DNI = 'ADMIN123';
 
 // ===============================================
 // Variables de Estado y Sincronización
