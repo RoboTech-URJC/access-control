@@ -2,7 +2,7 @@
 // Configuración de Firebase
 // ===============================================
 const firebaseConfig = {
-    apiKey: "AIzaSyAsggFpgDFUHRbD17nfcoe9G4Spo_avzZE", 
+    apiKey: API_KEY, 
     authDomain: "control-aceso-rt.firebaseapp.com",
     projectId: "control-aceso-rt",
     storageBucket: "control-aceso-rt.firebasestorage.app",
