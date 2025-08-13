@@ -14,8 +14,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const HARDCODED_ADMIN_DNI = 'ADMIN';
-
 // ===============================================
 // Variables de Estado y Sincronización
 // ===============================================
@@ -83,10 +81,7 @@ const ELEMENTS = {
 // Funciones de Sincronización con Firebase
 // ===============================================
 async function loadStateFromFirebase() {
-    const adminDoc = await db.collection('authorizedUsers').doc(HARDCODED_ADMIN_DNI).get();
-    if (!adminDoc.exists) {
-        await addAuthorizedDni(HARDCODED_ADMIN_DNI, true);
-    }
+    
     
     db.collection('authorizedUsers').onSnapshot(snapshot => {
         authorizedUsers = {};
@@ -324,13 +319,7 @@ async function loginUser() {
         return;
     }
 
-    if (dni === HARDCODED_ADMIN_DNI) {
-        loggedInUser = dni;
-        isAdmin = true;
-        setCookie('userDni', dni, 30);
-        renderMainUI();
-        ELEMENTS.loginDniInput.value = '';
-    } else {
+    
         const userDoc = await db.collection('authorizedUsers').doc(dni).get();
         if (userDoc.exists) {
             loggedInUser = dni;
@@ -341,7 +330,7 @@ async function loginUser() {
         } else {
             alert('DNI no autorizado.');
         }
-    }
+    
 }
 
 function logoutUser() {
@@ -548,10 +537,6 @@ async function addDni() {
         return;
     }
 
-    if (newDni === HARDCODED_ADMIN_DNI) {
-        alert('No puedes añadir o modificar el DNI de administrador por defecto.');
-        return;
-    }
 
     const userDoc = await db.collection('authorizedUsers').doc(newDni).get();
 
