@@ -39,6 +39,7 @@ const ELEMENTS = {
     welcomeMessage: document.getElementById('welcomeMessage'),
     adminDashboardBtn: document.getElementById('adminDashboardBtn'),
     loginDniInput: document.getElementById('loginDniInput'),
+    loginPinInput: document.getElementById('loginPinInput'),
     
     statusIndicator: document.getElementById('statusIndicator'),
     statusText: document.getElementById('statusText'),
@@ -74,6 +75,7 @@ const ELEMENTS = {
     pendingReservationsTableBody: document.getElementById('pendingReservationsTable').querySelector('tbody'),
     authorizedDnisTableBody: document.getElementById('authorizedDnisTable').querySelector('tbody'),
     newDniInput: document.getElementById('newDniInput'),
+    newPinInput: document.getElementById('newPinInput'),
     isAdminCheckbox: document.getElementById('isAdminCheckbox'),
 };
 
@@ -81,8 +83,6 @@ const ELEMENTS = {
 // Funciones de Sincronización con Firebase
 // ===============================================
 async function loadStateFromFirebase() {
-    
-    
     db.collection('authorizedUsers').onSnapshot(snapshot => {
         authorizedUsers = {};
         snapshot.forEach(doc => {
@@ -131,8 +131,12 @@ async function addLog(logData) {
     });
 }
 
-async function addAuthorizedDni(dni, isAdmin = false) {
-    await db.collection('authorizedUsers').doc(dni).set({ isAdmin, added: new Date() });
+async function addAuthorizedDni(dni, pin, isAdmin = false) {
+    await db.collection('authorizedUsers').doc(dni).set({ 
+        pin: pin, // Store PIN as string
+        isAdmin: isAdmin, 
+        added: new Date() 
+    });
     addLog({ type: 'DNI añadido', user: 'admin', details: `DNI: ${dni}` });
 }
 
@@ -205,7 +209,6 @@ function renderMainUI() {
 }
 
 function setIndicatorState(color, emoji, text, count) {
-    // Se ha modificado para usar las nuevas clases del CSS
     ELEMENTS.statusIndicator.className = `status-indicator-container status-indicator-${color}`;
     ELEMENTS.statusText.textContent = text;
     ELEMENTS.peopleCount.textContent = count;
@@ -222,7 +225,6 @@ function updateReservedDetails() {
 
 function updateAdminUI() {
     ELEMENTS.adminPeopleCount.textContent = peopleCount;
-    // Se ha modificado para usar las nuevas clases del CSS
     ELEMENTS.adminStatusIndicator.className = ELEMENTS.statusIndicator.className;
     ELEMENTS.adminStatusText.textContent = ELEMENTS.statusText.textContent;
     renderAdminTables();
@@ -314,29 +316,33 @@ function getCookie(name) {
 // ===============================================
 async function loginUser() {
     const dni = ELEMENTS.loginDniInput.value.trim().toUpperCase();
-    if (!dni) {
-        alert('Introduce un DNI para iniciar sesión.');
+    const pin = ELEMENTS.loginPinInput.value.trim();
+    
+    if (!dni || !pin) {
+        alert('Introduce un DNI y un PIN para iniciar sesión.');
         return;
     }
 
-    
-        const userDoc = await db.collection('authorizedUsers').doc(dni).get();
-        if (userDoc.exists) {
-            loggedInUser = dni;
-            isAdmin = userDoc.data().isAdmin || false;
-            setCookie('userDni', dni, 30);
-            renderMainUI();
-            ELEMENTS.loginDniInput.value = '';
-        } else {
-            alert('DNI no autorizado.');
-        }
-    
+    const userDoc = await db.collection('authorizedUsers').doc(dni).get();
+    if (userDoc.exists && userDoc.data().pin === pin) {
+        loggedInUser = dni;
+        isAdmin = userDoc.data().isAdmin || false;
+        setCookie('userDni', dni, 30);
+        setCookie('userPin', pin, 30); // Store PIN in cookie for auto-login
+        renderMainUI();
+        ELEMENTS.loginDniInput.value = '';
+        ELEMENTS.loginPinInput.value = '';
+        addLog({ type: 'login', user: dni, details: `Usuario ${dni} ha iniciado sesión` });
+    } else {
+        alert('DNI o PIN incorrectos.');
+    }
 }
 
 function logoutUser() {
     loggedInUser = null;
     isAdmin = false;
     setCookie('userDni', '', -1);
+    setCookie('userPin', '', -1);
     ELEMENTS.mainDashboard.classList.add('hidden');
     ELEMENTS.adminDashboard.classList.add('hidden');
     renderMainUI();
@@ -422,7 +428,7 @@ function endReservation() {
     if (confirm('¿Estás seguro de que quieres finalizar la reserva?')) {
         isReserved = false;
         activeReservation = null;
-        addLog({ type: 'reservation-ended', user: loggedInUser }); // El registro es ahora más preciso
+        addLog({ type: 'reservation-ended', user: loggedInUser });
         alert('Reserva finalizada.');
         saveAppState();
     }
@@ -530,22 +536,28 @@ function rejectReservation(index) {
 
 async function addDni() {
     const newDni = ELEMENTS.newDniInput.value.trim().toUpperCase();
+    const newPin = ELEMENTS.newPinInput.value.trim();
     const isAdminUser = ELEMENTS.isAdminCheckbox.checked;
 
-    if (!newDni) {
-        alert('El DNI no puede estar vacío.');
+    if (!newDni || !newPin) {
+        alert('El DNI y el PIN no pueden estar vacíos.');
         return;
     }
 
+    if (!/^\d{4}$/.test(newPin)) {
+        alert('El PIN debe ser un número de 4 dígitos.');
+        return;
+    }
 
     const userDoc = await db.collection('authorizedUsers').doc(newDni).get();
 
     if (userDoc.exists) {
         alert('Este DNI ya existe en la base de datos.');
     } else {
-        await addAuthorizedDni(newDni, isAdminUser);
+        await addAuthorizedDni(newDni, newPin, isAdminUser);
         alert(`DNI ${newDni} añadido correctamente.`);
         ELEMENTS.newDniInput.value = '';
+        ELEMENTS.newPinInput.value = '';
         ELEMENTS.isAdminCheckbox.checked = false;
     }
 }
@@ -569,8 +581,10 @@ document.addEventListener('DOMContentLoaded', () => {
         loadStateFromFirebase();
         
         const storedDni = getCookie('userDni');
-        if (storedDni) {
+        const storedPin = getCookie('userPin');
+        if (storedDni && storedPin) {
             ELEMENTS.loginDniInput.value = storedDni;
+            ELEMENTS.loginPinInput.value = storedPin;
             loginUser();
         } else {
             renderMainUI();
