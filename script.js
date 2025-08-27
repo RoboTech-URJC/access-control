@@ -2,7 +2,7 @@
 // Configuración de Firebase
 // ===============================================
 const firebaseConfig = {
-    apiKey: AIzaSyAsggFpgDFUHRbD17nfcoe9G4Spo_avzZE, 
+    apiKey: "AIzaSyAsggFpgDFUHRbD17nfcoe9G4Spo_avzZE", 
     authDomain: "control-aceso-rt.firebaseapp.com",
     projectId: "control-aceso-rt",
     storageBucket: "control-aceso-rt.firebasestorage.app",
@@ -506,6 +506,46 @@ function resetAll() {
         alerts = [];
 
         db.collection('logs').get().then(snapshot => snapshot.forEach(doc => doc.ref.delete()));
+        
+        saveAppState();
+
+        alert('Todos los datos han sido reseteados.');
+        backToDashboard();
+    }
+}
+
+function emptyLocal() {
+    if (confirm('⚠️ ¿Estás seguro? Esto borrará todos los datos de forma permanente y no se puede deshacer.')) {
+        peopleCount = 0;
+        isReserved = false;
+        insideDNIs = [];
+        activeReservation = null;
+        pendingReservations = [];
+        alerts = [];
+
+        
+        saveAppState();
+
+        alert('Todos los datos han sido reseteados.');
+        backToDashboard();
+    }
+}
+
+function resetLogs() {
+    if (confirm('⚠️ ¿Estás seguro? Esto borrará todos los datos de forma permanente y no se puede deshacer.')) {
+
+        db.collection('logs').get().then(snapshot => snapshot.forEach(doc => doc.ref.delete()));
+        
+        saveAppState();
+
+        alert('Todos los datos han sido reseteados.');
+        backToDashboard();
+    }
+}
+
+function resetUsers() {
+    if (confirm('⚠️ ¿Estás seguro? Esto borrará todos los datos de forma permanente y no se puede deshacer.')) {
+
         db.collection('authorizedUsers').get().then(snapshot => snapshot.forEach(doc => doc.ref.delete()));
         
         saveAppState();
