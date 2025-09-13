@@ -127,8 +127,16 @@ async function saveAppState() {
 async function addLog(logData) {
     await db.collection('logs').add({
         ...logData,
-        timestamp: new Date().toLocaleString()
-    });
+    timestamp: new Date().toLocaleString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).replace(',', ' -')
+        });
 }
 
 async function addAuthorizedDni(dni, pin, isAdmin = false) {
